@@ -1,0 +1,72 @@
+{
+     "joy": {
+          "x":-500,
+          "y":0,
+          "rotation":0
+     },
+     "love": {
+          "x":-400,
+          "y":0,
+          "rotation":0
+     },
+     "understanding": {
+          "x":-250,
+          "y":0,
+          "rotation":0
+     },
+     "connection": {
+          "x":-70,
+          "y":0,
+          "rotation":0
+     },
+     "safety": {
+          "x":50,
+          "y":0,
+          "rotation":0
+     },
+     "inspiration": {
+          "x":200,
+          "y":0,
+          "rotation":0
+     },
+     "empathy": {
+          "x":350,
+          "y":0,
+          "rotation":0
+     },
+     "curiosity": {
+          "x":460,
+          "y":0,
+          "rotation":0
+     },
+     "relief": {
+          "x":-500,
+          "y":100,
+          "rotation":0
+     },
+     "vulnerability": {
+          "x":-300,
+          "y":100,
+          "rotation":0
+     },
+     "anxiety": {
+          "x":-100,
+          "y":100,
+          "rotation":0
+     },
+     "fear": {
+          "x":100,
+          "y":100,
+          "rotation":0
+     },
+     "frustration": {
+          "x":300,
+          "y":100,
+          "rotation":0
+     },
+     "insecurity": {
+          "x":500,
+          "y":100,
+          "rotation":0
+     }
+}

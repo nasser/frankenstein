@@ -1,0 +1,19 @@
+{
+  "name": "touchtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-osc": "^2.1.0",
+    "osc": "2.2.0",
+    "osc-js": "^1.2.0"
+  }
+}
