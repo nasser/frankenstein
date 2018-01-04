@@ -2,7 +2,7 @@ var state = {
   selectedWords: [],
   selectedImages: [],
   /////
-  maxImages: 2
+  maxImages: 5
 };
 
 var uiState = {
