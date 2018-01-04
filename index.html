@@ -17,6 +17,12 @@
     min-height: 100%;
     object-fit: contain;
   }
+  
+  #network-config {
+    position: fixed;
+    background: white;
+    padding: 2em;
+  }
 </style>
 <script src="js/pixi.min.js" type="text/javascript"></script>
 <script src="js/timeline.js" type="text/javascript"></script>
@@ -30,6 +36,14 @@
   var app, tray, sideInterface;
   
   window.onload = function() {
+    // osc menu
+    document.querySelector("#network-config button").onclick = function() {
+      var ip = document.querySelector("input#ip").value;
+      var port = parseInt(document.querySelector("input#port").value);
+      connectOSC(ip, port);
+      document.querySelector("#network-config").remove();
+    }
+    
     app = new PIXI.Application({ antialias: true, transparent: false });
     app.renderer.backgroundColor = 0xbabababa;
     app.renderer.autoResize = true;
@@ -75,5 +89,11 @@
 </script>
 </head>
 <body>
+  <div id="network-config">
+    <h1>Network Configuration</h1>
+    <input placeholder="ip address" type="text" id="ip">
+    <input placeholder="port" type="text" id="port">
+    <button>OK</button>
+  </div>
 </body>
 </html>

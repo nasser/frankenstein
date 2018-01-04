@@ -1,8 +1,13 @@
 var osc = require('node-osc');
-var client = new osc.Client('127.0.0.1', 3333);
+var oscClient;
+
+function connectOSC(ip, port) {
+  oscClient = new osc.Client(ip, port);
+  console.log("osc connected", ip, port);
+}
 
 function sendOSC(address, param) {
-  client.send(address, param, function () {
-    console.log("sent", address, param);
+  oscClient.send(address, param, function () {
+    console.log("osc sent", address, param);
   });
 }
