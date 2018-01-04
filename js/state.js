@@ -49,9 +49,11 @@ var logic = {
         state.selectedImages.push(image.keyword);
         if(state.selectedImages.length == state.maxImages) {
           console.log("osc", JSON.stringify(state));
-          sendOSC("/sentiment", state.selectedImages.length)
-          sendOSC("/focus", 0.4)
-          sendOSC("/energy", uiState.hoverTime)
+          var mappings = aggregateMappings(state);
+          console.log("mappings", mappings);
+          sendOSC("/sentiment", mappings.sentiment);
+          sendOSC("/focus", mappings.focus);
+          sendOSC("/energy", mappings.energy);
         } else {
           uiState.mode = 'words';
           start(move(tray.position, "y", window.innerHeight/2, 2));
