@@ -1,23 +1,13 @@
-const parseCSV = require('csv-parse'),
-      fs = require("fs"),
-      csvSource = fs.readFileSync("js/mapping.csv");
-var csvData;
-
-parseCSV(csvSource, {comment: '#', trim:true}, function(err, output) {
-  if(err) throw err;
-  csvData = output;
-  console.log("parsed mapping csv") 
-});
+const fs = require("fs"),
+      emotions = require("./js/emotions"),
+      parts = require("./js/parts");
 
 function getMapping(inWord, inImage) {
-  for(var i=0; i<csvData.length; i++) {
-    var [word, image, sentiment, focus, energy] = csvData[i];
-    sentiment = parseFloat(sentiment);
-    focus = parseFloat(focus);
-    energy = parseFloat(energy);
-    if(word === inWord && image === inImage)
-      return {sentiment, focus, energy};
-  }
+  var attribute = parts[inImage];
+  var value = emotions[inWord][parts[inImage]] * 1.25;
+  var mapping = {sentiment:0, focus:0, energy:0}
+  mapping[attribute] = clamp(value, -1, 1);
+  return mapping;
 }
 
 function aggregateMappings(wordsAndImages) {

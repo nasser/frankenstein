@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "csv-parse": "^2.0.0",
     "node-osc": "^2.1.0",
     "osc": "2.2.0",
     "osc-js": "^1.2.0"

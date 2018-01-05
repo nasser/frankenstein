@@ -1,0 +1,56 @@
+{"joy":
+  { "sentiment": 1,
+    "focus": -0.2,
+    "energy": 1 },
+  "love":
+  { "sentiment": 0.8,
+    "focus": 0.7,
+    "energy": 0.5 },
+  "understanding":
+  { "sentiment": 0.4,
+    "focus": 0.8,
+    "energy": -0.2 },
+  "connection":
+  { "sentiment": 0.6,
+    "focus": 1,
+    "energy": 0.3 },
+  "safety":
+  { "sentiment": 0.2,
+    "focus": 0.4,
+    "energy": -0.4 },
+  "inspiration":
+  { "sentiment": 0.6,
+    "focus": -0.4,
+    "energy": 0.6 },
+  "empathy":
+  { "sentiment": 0.5,
+    "focus": -0.5,
+    "energy": -0.2 },
+  "curiosity":
+  { "sentiment": 0.2,
+    "focus": 0.8,
+    "energy": 0.25 },
+  "relief":
+  { "sentiment": 0.75,
+    "focus": -0.7,
+    "energy": -0.8 },
+  "vulnerability":
+  { "sentiment": -0.3,
+    "focus": -1,
+    "energy": -0.3 },
+  "anxiety":
+  { "sentiment": -0.8,
+    "focus": -0.7,
+    "energy": 0.7 },
+  "fear":
+  { "sentiment": -1,
+    "focus": 0.7,
+    "energy": 1 },
+  "frustration":
+  { "sentiment": -0.4,
+    "focus": -0.2,
+    "energy": -0.3 },
+  "insecurity":
+  { "sentiment": -0.5,
+    "focus": -0.8,
+    "energy": 0.4} }

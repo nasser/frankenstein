@@ -25,11 +25,6 @@ function hoverColor() {
   return PIXI.utils.rgb2hex([r, g, b]);
 }
 
-function clamp(x, a, b) {
-  return x < a ? a : x > b ? b : x;
-}
-
-
 var logic = {
   images: {
     tick: function(delta) {
