@@ -1,4 +1,4 @@
-const wordData = require("./js/words.json");
+const wordData = require("./words.json");
 var wordElements = [];
 
 function newText(s, x, y, rotation) {
@@ -52,3 +52,5 @@ function wordPage() {
   }
   return page;
 }
+
+module.exports = { wordPage, selectedWord, allSelectedWords, allWords, textContains, newText }

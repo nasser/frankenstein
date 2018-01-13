@@ -1,4 +1,4 @@
-const imageData = require("./js/images.json");
+const imageData = require("./images.json");
 var imageElements = [];
 
 function newImage(s, x, y, scale, rotation) {
@@ -55,3 +55,5 @@ function imagePage() {
   }
   return page;
 }
+
+module.exports = { imagePage, selectedImage, allSelectedImages, allImages, imageContains, newImage }

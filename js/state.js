@@ -1,3 +1,10 @@
+const words = require("./words"),
+      images = require("./images"),
+      network = require("./network"),
+      mapping = require("./mapping"),
+      common = require("./common"),
+      timeline = require("./timeline");
+
 var state = {
   selectedWords: [],
   selectedImages: [],
@@ -18,7 +25,7 @@ var uiState = {
 };
 
 function hoverColor() {
-  const t = clamp(uiState.hoverTime / uiState.targetHoverTime, 0, 1),
+  const t = common.clamp(uiState.hoverTime / uiState.targetHoverTime, 0, 1),
         r = uiState.hoverToColor[0] * t + uiState.hoverFromColor[0] * (1 - t),
         g = uiState.hoverToColor[1] * t + uiState.hoverFromColor[1] * (1 - t),
         b = uiState.hoverToColor[2] * t + uiState.hoverFromColor[2] * (1 - t);
@@ -28,14 +35,14 @@ function hoverColor() {
 var logic = {
   images: {
     tick: function(delta) {
-      var image = selectedImage(uiState.touches);
+      var image = images.selectedImage(uiState.touches);
       
       if(image) {
         uiState.hoverTime += delta / 1000;
         image.tint = hoverColor();
         
       } else {
-        allImages().forEach(i => i.tint = 0xffffff);
+        images.allImages().forEach(i => i.tint = 0xffffff);
         uiState.hoverTime = 0;
         
       }
@@ -44,14 +51,14 @@ var logic = {
         state.selectedImages.push(image.keyword);
         if(state.selectedImages.length == state.maxImages) {
           console.log("osc", JSON.stringify(state));
-          var mappings = aggregateMappings(state);
+          var mappings = mapping.aggregateMappings(state);
           console.log("mappings", mappings);
-          sendOSC("/sentiment", mappings.sentiment);
-          sendOSC("/focus", mappings.focus);
-          sendOSC("/energy", mappings.energy);
+          network.sendOSC("/sentiment", mappings.sentiment);
+          network.sendOSC("/focus", mappings.focus);
+          network.sendOSC("/energy", mappings.energy);
         } else {
           uiState.mode = 'words';
-          start(move(tray.position, "y", window.innerHeight/2, 2));
+          timeline.start(timeline.move(tray.position, "y", window.innerHeight/2, 2));
         }
         uiState.hoverTime = 0;
       }
@@ -60,14 +67,14 @@ var logic = {
   
   words: {
     tick: function(delta) {
-      var word = selectedWord(uiState.touches);
+      var word = words.selectedWord(uiState.touches);
       
       if(word) {
         uiState.hoverTime += delta / 1000;
         word.style.fill = hoverColor();
         
       } else {
-        allWords().forEach(w => w.style.fill = 0xffffff);
+        words.allWords().forEach(w => w.style.fill = 0xffffff);
         uiState.hoverTime = 0;
         
       }
@@ -76,8 +83,10 @@ var logic = {
         uiState.hoverTime = 0;
         state.selectedWords.push(word.text);
         uiState.mode = 'images';
-        start(move(tray.position, "y", -window.innerHeight/2, 2));
+        timeline.start(timeline.move(tray.position, "y", -window.innerHeight/2, 2));
       }
     }
   }
 }
+
+module.exports = { logic, state, uiState }

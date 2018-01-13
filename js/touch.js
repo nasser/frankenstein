@@ -28,3 +28,5 @@ function routeMouseToTouches(element) {
     dispatchTouchEvent(e.clientX, e.clientY, app.view, "touchmove");
   });
 }
+
+module.exports = { routeMouseToTouches }

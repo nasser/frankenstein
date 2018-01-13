@@ -22,3 +22,5 @@ function runTimeline(d) {
   var r = timeline[0](d);
   if(r === true) timeline.shift();
 }
+
+module.exports = { runTimeline, move, start }

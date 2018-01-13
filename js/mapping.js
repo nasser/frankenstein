@@ -1,12 +1,13 @@
 const fs = require("fs"),
-      emotions = require("./js/emotions"),
-      parts = require("./js/parts");
+      emotions = require("./emotions"),
+      parts = require("./parts")
+      common = require("./common");
 
 function getMapping(inWord, inImage) {
   var attribute = parts[inImage];
   var value = emotions[inWord][parts[inImage]] * 1.25;
   var mapping = {sentiment:0, focus:0, energy:0}
-  mapping[attribute] = clamp(value, -1, 1);
+  mapping[attribute] = common.clamp(value, -1, 1);
   return mapping;
 }
 
@@ -21,3 +22,5 @@ function aggregateMappings(wordsAndImages) {
   }
   return finalMapping;
 }
+
+module.exports = { aggregateMappings, getMapping }

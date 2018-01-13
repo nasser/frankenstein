@@ -11,3 +11,5 @@ function sendOSC(address, param) {
     console.log("osc sent", address, param);
   });
 }
+
+module.exports = { sendOSC, connectOSC }
