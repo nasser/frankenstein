@@ -3,11 +3,16 @@
 <head>
   <title>Frankenstein AI</title>
   <style type="text/css">
+  @font-face {
+    font-family: 'Memphis';
+    src: url('fonts/memphis.ttf')  format('truetype'); /* Safari, Android, iOS */
+  }
+  
   html, body {
     margin: 0;
     width: 100%;
     height: 100%;
-    /*background: black;*/
+    background: black;
     touch-action: none; 
   }
   
@@ -19,22 +24,23 @@
   }
   
   #network-config {
+    display: none;
     position: fixed;
     background: white;
     padding: 2em;
   }
 </style>
 <script type="text/javascript">
-  // /require {DotFilter} from '@pixi/filter-dot';
+  var curveGraphics;
   const PIXI = require("pixi.js"),
         timeline = require("./js/timeline"),
+        aesthetics = require("./js/aesthetics"),
         state = require("./js/state"),
         network = require("./js/network"),
         words = require("./js/words"),
+        curve = require("./js/curve"),
         images = require("./js/images"),
         touch = require("./js/touch")
-        
-        
   
   PIXI.utils.sayHello("Frankenstein AI")
   var app, tray, sideInterface;
@@ -49,17 +55,17 @@
     }
     
     app = new PIXI.Application({ antialias: true, transparent: false });
-    app.renderer.backgroundColor = 0xbabababa;
+    app.renderer.backgroundColor = 0xffffff;
     app.renderer.autoResize = true;
     app.renderer.resize(window.innerWidth, window.innerHeight);
     document.body.appendChild(app.view);
     touch.routeMouseToTouches(app.view);
-    // var renderTexture = PIXI.RenderTexture.create(window.innerWidth, window.innerHeight);
     
     tray = new PIXI.Container();
     tray.position.x = window.innerWidth/2;
     tray.position.y = window.innerHeight/2;
     tray.rotation = Math.PI/2;
+    tray.filters = [aesthetics.filters.blurFilter, aesthetics.filters.motionBlurFilter, aesthetics.filters.glitchFilter];
     app.stage.addChild(tray);
         
     tray.addChild(words.wordPage());
@@ -70,6 +76,20 @@
     sideInterface.position.y = 0;
     sideInterface.rotation = Math.PI/2;
     app.stage.addChild(sideInterface);
+    
+    var dust = aesthetics.newDust("3", 700, 0, 1, 0);
+    app.stage.addChild(dust);
+    
+    app.stage.addChild(aesthetics.sideRuler(10, window.innerHeight/2));
+    app.stage.addChild(aesthetics.bottomRuler(window.innerWidth/2, 10));
+    
+    // curveGraphics = new PIXI.Graphics(true);
+    // curveGraphics.lineStyle(1, 0, 1);
+    // curveGraphics.moveTo(state.moveCurve[0].x, state.moveCurve[0].y);
+    // for(var i=0; i<1; i+= 0.01) {
+    //   curveGraphics.lineTo(i * 100, curve.evaluate(i, state.moveCurve));
+    // }
+    // tray.addChild(curveGraphics);
         
     app.view.addEventListener('touchmove', function(e) {
       state.uiState.touches = e.touches;
@@ -83,10 +103,9 @@
     
     function tick(d) {
       requestAnimationFrame(tick);
-      const delta = d - state.uiState.lastTime;
+      const delta = (d - state.uiState.lastTime) / 1000;
       state.uiState.lastTime = d;
-      timeline.runTimeline(delta);
-      // app.renderer.render(app.stage);
+      timeline.runTimelines(delta);
       currentState().tick(delta);
     }
     

@@ -3,6 +3,8 @@ const words = require("./words"),
       network = require("./network"),
       mapping = require("./mapping"),
       common = require("./common"),
+      curve = require("./curve"),
+      aesthetics = require("./aesthetics"),
       timeline = require("./timeline");
 
 var state = {
@@ -19,18 +21,20 @@ var uiState = {
   touches: [],
   hoverTime: 0,
   /////
-  targetHoverTime: 2,
-  hoverFromColor: [1, 1, 1],
-  hoverToColor: [0.2, 0.1, 1],
+  targetHoverTime: 2
 };
 
-function hoverColor() {
+function hoverColor(fromColor, toColor) {
   const t = common.clamp(uiState.hoverTime / uiState.targetHoverTime, 0, 1),
-        r = uiState.hoverToColor[0] * t + uiState.hoverFromColor[0] * (1 - t),
-        g = uiState.hoverToColor[1] * t + uiState.hoverFromColor[1] * (1 - t),
-        b = uiState.hoverToColor[2] * t + uiState.hoverFromColor[2] * (1 - t);
+        r = toColor[0] * t + fromColor[0] * (1 - t),
+        g = toColor[1] * t + fromColor[1] * (1 - t),
+        b = toColor[2] * t + fromColor[2] * (1 - t);
   return PIXI.utils.rgb2hex([r, g, b]);
 }
+
+// #unity/Keyframe [0.0 0.0 0 0.0 100.0] #unity/Keyframe [-650.1121 -650.1121 0 0.3267442 300.0] #unity/Keyframe [0.0 0.0 0 1.0 100.0]
+
+var moveCurve = [curve.keyframe(0, 100, 0, 0), curve.keyframe(0.1, 6000, 0, 0), curve.keyframe(1, 100, 1, 0)]
 
 var logic = {
   images: {
@@ -38,8 +42,8 @@ var logic = {
       var image = images.selectedImage(uiState.touches);
       
       if(image) {
-        uiState.hoverTime += delta / 1000;
-        image.tint = hoverColor();
+        uiState.hoverTime += delta;
+        image.tint = hoverColor([1, 1, 1], [0.2, 0.1, 1]);
         
       } else {
         images.allImages().forEach(i => i.tint = 0xffffff);
@@ -58,7 +62,7 @@ var logic = {
           network.sendOSC("/energy", mappings.energy);
         } else {
           uiState.mode = 'words';
-          timeline.start(timeline.move(tray.position, "y", window.innerHeight/2, 2));
+          timeline.start(aesthetics.moveBlurry(tray.position, "y", window.innerHeight/2, moveCurve));
         }
         uiState.hoverTime = 0;
       }
@@ -70,11 +74,11 @@ var logic = {
       var word = words.selectedWord(uiState.touches);
       
       if(word) {
-        uiState.hoverTime += delta / 1000;
-        word.style.fill = hoverColor();
+        uiState.hoverTime += delta;
+        word.style.fill = hoverColor([0, 0, 0], [0.2, 0.1, 1]);
         
       } else {
-        words.allWords().forEach(w => w.style.fill = 0xffffff);
+        words.allWords().forEach(w => w.style.fill = 0x0);
         uiState.hoverTime = 0;
         
       }
@@ -83,10 +87,10 @@ var logic = {
         uiState.hoverTime = 0;
         state.selectedWords.push(word.text);
         uiState.mode = 'images';
-        timeline.start(timeline.move(tray.position, "y", -window.innerHeight/2, 2));
+        timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight/2, moveCurve));
       }
     }
   }
 }
 
-module.exports = { logic, state, uiState }
+module.exports = { logic, state, uiState, moveCurve }

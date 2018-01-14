@@ -1,26 +1,31 @@
-var timeline = [];
+var timelines = { default: [] };
 
-function start(f) {
-  timeline.push(f);
+function start(f, tl) {
+  if(tl === undefined)
+    tl = "default"
+  timelines[tl] = timelines[tl] || [];
+  timelines[tl].push(f);
 }
 
-function move(obj, prop, value, speed) {
-  var direction = Math.sign(value - obj[prop]);
-  speed *= direction;
+function once(f) {
   return function(d) {
-    obj[prop] += d * speed;
-    if(Math.abs(obj[prop] - value) < Math.abs(d)) {
-      obj[prop] = value;
-      return true;
-    }
+    f(d);
+    return true;
   }
 }
 
-function runTimeline(d) {
-  if(timeline.length == 0)
+function runTimeline(t, d) {
+  if(t.length == 0)
     return;
-  var r = timeline[0](d);
-  if(r === true) timeline.shift();
+  var r = t[0](d);
+  if(r === true) t.shift();
 }
 
-module.exports = { runTimeline, move, start }
+function runTimelines(d) {
+  var tls = Object.keys(timelines);
+  for (var i = tls.length - 1; i >= 0; i--) {
+    runTimeline(timelines[tls[i]], d);
+  }
+}
+
+module.exports = { runTimelines, start, once }

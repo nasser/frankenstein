@@ -6,6 +6,8 @@ function newText(s, x, y, rotation) {
   text.x = x;
   text.y = y;
   text.style.fill = "black";
+  text.style.fontFamily = "Memphis";
+  text.style.fontSize = 60;
   var metrics = PIXI.TextMetrics.measureText(text.text, text.style)
   text.pivot.x = metrics.width/2;
   text.pivot.y = metrics.height/2;

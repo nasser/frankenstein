@@ -1,32 +1,32 @@
 {
      "brain": {
-          "scale": 0.1,
+          "scale": 0.5,
           "x":-300,
-          "y":0,
+          "y":500,
           "rotation":0
      },
      "ear": {
-          "scale": 0.05,
-          "x":-100,
-          "y":0,
+          "scale": 0.1,
+          "x":-300,
+          "y":-400,
           "rotation":0
      },
      "eye": {
-          "scale": 0.1,
+          "scale": 0.5,
           "x":300,
-          "y":0,
+          "y":-600,
           "rotation":0
      },
      "hand": {
-          "scale": 0.1,
+          "scale": 0.5,
           "x":200,
-          "y":0,
+          "y":-100,
           "rotation":0
      },
      "heart": {
-          "scale": 0.1,
-          "x":50,
-          "y":0,
+          "scale": 0.5,
+          "x":150,
+          "y":400,
           "rotation":0
      }
 }
