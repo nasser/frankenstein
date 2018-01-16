@@ -1,11 +1,13 @@
-const imageData = require("./images.json");
+const imageData = require("./images.json"),
+      touch = require("./touch.js");
+      
 var imageElements = [];
 
 function newImage(s, x, y, scale, rotation) {
-  var sprite = new PIXI.Sprite.fromImage('image/' + s + '.jpg');
+  var sprite = new PIXI.Sprite.fromImage('image/parts/' + s + '.png');
   sprite.keyword = s;
-  sprite.x = x;
-  sprite.y = y;
+  sprite.x = x * (window.innerWidth/4);
+  sprite.y = y * (window.innerHeight/4);
   sprite.texture.baseTexture.on('loaded', function(){
     sprite.scale.x = scale;
     sprite.scale.y = scale;
@@ -31,13 +33,8 @@ function allImages() {
 }
 
 function allSelectedImages(touches) {
-  return imageElements.filter(w => {
-    for(var i=0; i<touches.length; i++) {
-      if(imageContains(w, touches[i].clientX, touches[i].clientY))
-        return true;
-      return false;
-    }
-  });
+  var p = touch.centroid(touches);
+  return imageElements.filter(w => imageContains(w, p.x, p.y));
 }
 
 function selectedImage(touches) {
@@ -45,9 +42,9 @@ function selectedImage(touches) {
   return images.length == 0 ? null : images[0];
 }
 
-function imagePage() {
+function imagePage(n) {
   var page = new PIXI.Container();
-  page.position.x = window.innerHeight;
+  page.position.x = window.innerHeight * n;
   for (var k in imageData) {
     let w = imageData[k],
         t = newImage(k, w.x, w.y, w.scale, w.rotation);

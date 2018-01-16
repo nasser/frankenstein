@@ -1,13 +1,16 @@
-const wordData = require("./words.json");
+const wordData = require("./words.json"),
+      aestheticConfig = require("./aesthetic-configuration"),
+      touch = require("./touch");
+
 var wordElements = [];
 
-function newText(s, x, y, rotation) {
+function newText(s, x, y, rotation, scale) {
   var text = new PIXI.Text(s);
-  text.x = x;
-  text.y = y;
-  text.style.fill = "black";
+  text.x = x * (window.innerHeight*0.6);
+  text.y = y * (window.innerWidth*0.6);
+  text.style.fill = "#ccaabb";
   text.style.fontFamily = "Memphis";
-  text.style.fontSize = 60;
+  text.style.fontSize = scale;
   var metrics = PIXI.TextMetrics.measureText(text.text, text.style)
   text.pivot.x = metrics.width/2;
   text.pivot.y = metrics.height/2;
@@ -31,13 +34,8 @@ function allWords() {
 }
 
 function allSelectedWords(touches) {
-  return wordElements.filter(w => {
-    for(var i=0; i<touches.length; i++) {
-      if(textContains(w, touches[i].clientX, touches[i].clientY))
-        return true;
-      return false;
-    }
-  });
+  var p = touch.centroid(touches);
+  return wordElements.filter(w => textContains(w, p.x, p.y));
 }
 
 function selectedWord(touches) {
@@ -45,11 +43,13 @@ function selectedWord(touches) {
   return words.length == 0 ? null : words[0];
 }
 
-function wordPage() {
+function wordPage(n) {
   var page = new PIXI.Container();
+  page.position.x = window.innerHeight * n;
   for (var k in wordData) {
     let w = wordData[k],
-        t = newText(k, w.x, w.y, w.rotation);
+        t = newText(k, w.x, w.y, w.rotation, w.scale);
+    t.rotation += Math.random() * aestheticConfig.wordRotationJitter - (aestheticConfig.wordRotationJitter/2);
     page.addChild(t);
   }
   return page;

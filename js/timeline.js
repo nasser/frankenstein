@@ -28,4 +28,4 @@ function runTimelines(d) {
   }
 }
 
-module.exports = { runTimelines, start, once }
+module.exports = { runTimelines, start, once, timelines }

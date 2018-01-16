@@ -1,0 +1,9 @@
+{
+  "hoverTime": 2,
+  "ignoreTouchesTimeout": 5,
+  "totalSelections": 5,
+  "useMousePointer": true,
+  "waitForFourTouches": true,
+  "fullScreen": false,
+  "devTools": false
+}

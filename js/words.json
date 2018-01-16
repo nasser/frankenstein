@@ -1,72 +1,86 @@
 {
      "joy": {
-          "x":-500,
-          "y":0,
+          "x":-0.5,
+          "y":0.1,
+          "scale":60,
           "rotation":0
      },
      "love": {
-          "x":-400,
-          "y":-200,
+          "x":0.5,
+          "y":0.2,
+          "scale":60,
           "rotation":0
      },
      "understanding": {
-          "x":-250,
-          "y":-50,
+          "x":0.25,
+          "y":0.3,
+          "scale":60,
           "rotation":0
      },
      "connection": {
-          "x":-70,
-          "y":-400,
+          "x":-0.4,
+          "y":0.0,
+          "scale":60,
           "rotation":0
      },
      "safety": {
-          "x":50,
-          "y":-200,
+          "x":0,
+          "y":-0.1,
+          "scale":60,
           "rotation":0
      },
      "inspiration": {
-          "x":200,
-          "y":0,
+          "x":0,
+          "y":-0.2,
+          "scale":60,
           "rotation":0
      },
      "empathy": {
-          "x":350,
-          "y":-300,
+          "x":0,
+          "y":-0.3,
+          "scale":60,
           "rotation":0
      },
      "curiosity": {
-          "x":360,
-          "y":-500,
+          "x":-0.5,
+          "y":-0.2,
+          "scale":60,
           "rotation":0
      },
      "relief": {
-          "x":-500,
-          "y":200,
+          "x":0.4,
+          "y":0,
+          "scale":60,
           "rotation":0
      },
      "vulnerability": {
-          "x":-300,
-          "y":400,
+          "x":-0.4,
+          "y":0.35,
+          "scale":60,
           "rotation":0
      },
      "anxiety": {
-          "x":-100,
-          "y":200,
+          "x":-0.5,
+          "y":0.2,
+          "scale":60,
           "rotation":0
      },
      "fear": {
-          "x":100,
-          "y":600,
+          "x":0.15,
+          "y":-0.015,
+          "scale":60,
           "rotation":0
      },
      "frustration": {
-          "x":300,
-          "y":200,
+          "x":0,
+          "y":0.1,
+          "scale":60,
           "rotation":0
      },
      "insecurity": {
-          "x":400,
-          "y":500,
+          "x":0,
+          "y":0.2,
+          "scale":60,
           "rotation":0
      }
 }

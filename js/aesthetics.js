@@ -1,7 +1,9 @@
 const PIXI = require("pixi.js"),
       pixiFilters = require("pixi-filters"),
       common = require("./common"),
+      config = require("./aesthetic-configuration"),
       curve = require("./curve"),
+      sound = require("./sound"),
       timeline = require("./timeline"),
       blurFilter = new PIXI.filters.BlurFilter(),
       glitchFilter = new pixiFilters.GlitchFilter(),
@@ -9,7 +11,7 @@ const PIXI = require("pixi.js"),
       
 blurFilter.blur = 0;
 blurFilter.quality = 1;
-motionBlurFilter.kernelSize = 45;
+motionBlurFilter.kernelSize = 11;
 glitchFilter.enabled = false
 glitchFilter.slices = 50
 
@@ -36,7 +38,17 @@ function bottomRuler(x, y) {
   return sprite;
 }
 
-
+function corner(t, x, y, r) {
+  var sprite = new PIXI.Sprite.fromImage('image/microfilm/corner-' + t +'.png');
+  sprite.texture.baseTexture.on('loaded', function(){
+    sprite.pivot.x = sprite.width / 2;
+    sprite.pivot.y = 0;
+    sprite.x = x;
+    sprite.y = y;
+    sprite.rotation = Math.PI/2 * r;
+  });
+  return sprite;
+}
 
 //// dust + scratches ////
 
@@ -59,17 +71,27 @@ function newDust(s, x, y, scale, rotation) {
 
 //// motion blur ////
 
+function wait(s) {
+  return d => (s -= d) <= 0;
+}
+
 function move(obj, prop, value, speed) {
   var direction = Math.sign(value - obj[prop]);
   speed *= direction;
   return function(d) {
-    d *= 1000
+    // d *= 1000
+    if(!obj && !obj[prop])
+      return true;
     obj[prop] += d * speed;
-    if(Math.abs(obj[prop] - value) < Math.abs(d)) {
+    if(Math.abs(obj[prop] - value) < Math.abs(d * speed)) {
       obj[prop] = value;
       return true;
     }
   }
+}
+
+function moveRelative(obj, prop, value, speed) {
+  return move(obj, prop, obj[prop] + value, speed);
 }
 
 function moveBlurry(obj, prop, value, speed) {
@@ -104,13 +126,18 @@ function unfocusEffect(time, a, b) {
 }
       
 function unfocus() {
+  var sfx = sound.bank.focus();
+  sfx.play();
+  var divisions = Math.floor(Math.random() * 2) + 3; 
+  
   timeline.start(timeline.once(d => blurFilter.quality = 4), "aesthetics");
-  timeline.start(unfocusEffect(0.2, blurFilter.blur, 8), "aesthetics")
-  timeline.start(unfocusEffect(0.2, 8, 1), "aesthetics")
-  timeline.start(unfocusEffect(0.3, 1, 9), "aesthetics")
-  timeline.start(unfocusEffect(0.3, 9, 10), "aesthetics")
-  timeline.start(unfocusEffect(0.3, 10, 9), "aesthetics")
-  timeline.start(unfocusEffect(0.2, 9, 0), "aesthetics")
+  var lastBlur = blurFilter.blur;
+  for(var i=0; i<divisions-1; i++) {
+    var nextBlur = Math.random() * 11;
+    timeline.start(unfocusEffect(sfx.duration/divisions, lastBlur, nextBlur), "aesthetics")
+    lastBlur = nextBlur;
+  }
+  timeline.start(unfocusEffect(sfx.duration/divisions, lastBlur, 0), "aesthetics")
   timeline.start(timeline.once(d => {blurFilter.blur = 0; blurFilter.quality = 1;}), "aesthetics");
 }
 
@@ -135,11 +162,165 @@ function glitchEffect(s) {
 }
 
 function glitchOut() {
-  glitchEffect(0.4);
-  glitchEffect(0.2);
+  var sfx = sound.bank.glitch();
+  sfx.play();
+  var divisions = Math.floor(Math.random() * 2) + 1; 
+  for(var i=0; i<divisions; i++)
+    glitchEffect(sfx.duration/divisions);
+}
+
+//// adjust rotation ////
+
+function adjustRotation(tray) {
+  var originalRotation = tray.rotation;
+  timeline.start(move(tray, "rotation", originalRotation+0.5, 1))
+  // timeline.start(wait(0.1))
+  timeline.start(move(tray, "rotation", originalRotation, 2))
 }
       
+//// filler pages ////
+
+const fillerPageCount = 2;
+var fillerSprites = [];
+
+function fillerPage(n) {
+  var i = Math.floor(Math.random() * fillerPageCount);
+  var path = 'image/pages/page' + i + '.png';
+  var page = new PIXI.Sprite.fromImage(path);
+  page.position.x = window.innerHeight * n;
+  page.texture.baseTexture.on('loaded', function(){
+    let scale =  window.innerWidth / page.height;
+    page.scale.x = scale;
+    page.scale.y = scale;
+    page.pivot.x = page.width / 2 / scale;
+    page.pivot.y = page.height / 2 / scale;
+    page.rotation = Math.PI/2;
+  });
+  
+  fillerSprites.push(page);
+  
+  return page;
+}
+
+function shuffleFillerPages() {
+  var tray = fillerSprites[0].parent;
+  for (var i = fillerSprites.length - 1; i >= 0; i--) {
+    fillerSprites[i].destroy();
+  }
+  
+  fillerSprites = [];
+  
+  tray.addChild(aesthetics.fillerPage(2));
+  tray.addChild(aesthetics.fillerPage(3));
+  tray.addChild(aesthetics.fillerPage(4));
+  tray.addChild(aesthetics.fillerPage(5));
+  tray.addChild(aesthetics.fillerPage(6));
+}
+
+//// bulb ////
+
+var _bulb;
+
+function bulb() {
+  var bulb = new PIXI.Sprite.fromImage('image/bulb.jpg');
+  bulb.width = window.innerWidth;
+  bulb.height = window.innerHeight;
+  bulb.tint = PIXI.utils.rgb2hex([0.15,0.15,0.15])
+  _bulb = bulb;
+  return bulb;
+}
+
+function blackColor(v) {
+  return PIXI.utils.rgb2hex([v, v, v]);
+}
+
+function slowFlicker() {
+  sound.bank.slowFlicker().play();
+  var speed = 0.5;
+  var v = 1;
+  timeline.start(d => {
+    v -= d * speed;
+    _bulb.tint = blackColor(v);
+    return v <= 0.1;
+  }, 'aesthetics');
+  timeline.start(d => {
+    v += d * speed * 6;
+    _bulb.tint = blackColor(v);
+    return v >= 0.9;
+  }, 'aesthetics');
+}
+
+function quickFlicker() {
+  sound.bank.quickFlicker().play();
+  var speed = 5;
+  var v = 1;
+  for(var i=0; i<2; i++) {
+    timeline.start(d => {
+      v -= d * speed;
+      _bulb.tint = blackColor(v);
+      return v <= 0.1;
+    }, 'aesthetics');
+    timeline.start(d => {
+      v += d * speed;
+      _bulb.tint = blackColor(v);
+      return v >= 0.9;
+    }, 'aesthetics');
+  }
+}
+
+//// intro ////
+
+function intro() {
+  var speed = 0.1;
+  var v = 0.15;
+  timeline.start(d => {
+    v += d * speed;
+    _bulb.tint = blackColor(v);
+    return v >= 0.9;
+  });
+  
+  for (var i = 0; i < 4; i++) {
+    occasional([unfocus, glitchOut]);
+    timeline.start(wait(Math.random() * 5), 'aesthetics')
+  }
+  
+}
+
+//// greebles ////
+
+function newGreeble(x, y, rotation) {
+  var s = Math.floor(Math.random() * 6);
+  var sprite = new PIXI.Sprite.fromImage('image/microfilm/greeble' + s + '.png');
+  sprite.x = x;
+  sprite.y = y;
+  sprite.texture.baseTexture.on('loaded', function(){
+    sprite.pivot.x = sprite.width / 2;
+    sprite.pivot.y = sprite.height / 2;
+    sprite.rotation = rotation;
+  });
+  return sprite;
+}
+
+//// occasionals ////
+
+function occasional(effects) {
+  effects = effects || [unfocus, glitchOut, quickFlicker];
+  var randomEffect = effects[Math.floor(Math.random() * effects.length)]
+  randomEffect();
+}
+
+function startOccasionals() {
+  setInterval(function() {
+    if(Math.random() < config.occasionalChance)
+      occasional();
+  }, config.occasionalFrequency * 1000);
+}
+
+
 module.exports = {
-  sideRuler, bottomRuler, newDust, move, moveBlurry, unfocus, glitchOut,
+  fillerSprites,
+  intro, newGreeble, bulb, quickFlicker, slowFlicker, startOccasionals, corner, fillerPage,
+  shuffleFillerPages, adjustRotation, sideRuler, bottomRuler, newDust,
+  move, moveRelative, moveBlurry, unfocus, glitchOut,
   filters: { blurFilter, motionBlurFilter, glitchFilter }
 }

@@ -1,0 +1,13 @@
+{
+  "wordRotationJitter": 0.3,
+  "greebleCount": 10,
+  "highlightColor": [1, 0.5, 1],
+  "occasionalFrequency": 15,
+  "occasionalChance": 0.2,
+  "particleLifetimes": [0, 0.1, 0.5, 0.7, 1],
+  "particleFrequencies": [0, 0.02, 0.01, 0.005, 0.001],
+  "particleStartColors": [[0, 0, 0], [255, 0, 255], [255, 255, 0], [0, 0, 255], [255, 255, 255]],
+  "particleEndColors":   [[0, 0, 0], [255, 0, 255], [255, 255, 0], [0, 0, 255], [255, 255, 255]],
+  "particleMinStartRotation": [0, 0, -30, -30, -30],
+  "particleMaxStartRotation": [0, 360, 30, 30, 30]
+}
