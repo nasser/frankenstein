@@ -1,7 +1,8 @@
-var osc = require('node-osc'),
-    state = require("./state")
-    config = require("./network-configuration")
-var oscClient;
+const osc = require('node-osc'),
+      state = require("./state"),
+      config = require("./network-configuration");
+
+var oscClient, oscServer;
 
 function connectOSC(ip, port) {
   oscClient = new osc.Client(ip, port);
@@ -15,17 +16,6 @@ function sendOSC(address, param) {
 }
 
 connectOSC(config.remoteIP, config.port);
+oscServer = new osc.Server(config.port, '0.0.0.0');
 
-var oscServer = new osc.Server(config.port, '0.0.0.0');
-
-oscServer.on("/start-surface", function (msg, rinfo) {
-  console.log("got start message");
-  state.start();
-});
-
-oscServer.on("/reset-surface", function (msg, rinfo) {
-  console.log("got reset message");
-  location.reload();
-});
-
-module.exports = { sendOSC, connectOSC }
+module.exports = { sendOSC, connectOSC, client:oscClient, server:oscServer }

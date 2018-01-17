@@ -59,8 +59,18 @@
   function loadExperience() {
     console.log("start with state.start()");
     
-    // osc menu
     sound.init();
+    
+    network.server.on("/start-surface", function (msg, rinfo) {
+      console.log("got start message");
+      state.start();
+    });
+
+    network.server.on("/reset-surface", function (msg, rinfo) {
+      console.log("got reset message");
+      location.reload();
+    });
+
     
     document.querySelector("#network-config button").onclick = function() {
       var ip = document.querySelector("input#ip").value;
