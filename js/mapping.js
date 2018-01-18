@@ -20,6 +20,9 @@ function aggregateMappings(wordsAndImages) {
     finalMapping.focus += mapping.focus;
     finalMapping.energy += mapping.energy;
   }
+  finalMapping.sentiment = common.clamp(finalMapping.sentiment, -1, 1);
+  finalMapping.focus = common.clamp(finalMapping.focus, -1, 1);
+  finalMapping.energy = common.clamp(finalMapping.energy, -1, 1);
   return finalMapping;
 }
 
