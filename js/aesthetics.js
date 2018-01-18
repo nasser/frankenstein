@@ -225,7 +225,7 @@ function bulb() {
   var bulb = new PIXI.Sprite.fromImage('image/bulb.jpg');
   bulb.width = window.innerWidth;
   bulb.height = window.innerHeight;
-  bulb.tint = PIXI.utils.rgb2hex([0.15,0.15,0.15])
+  bulb.tint = PIXI.utils.rgb2hex([0,0,0])
   _bulb = bulb;
   return bulb;
 }
