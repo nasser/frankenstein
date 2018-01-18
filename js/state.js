@@ -23,15 +23,17 @@ var uiState = {
   lastTime: 0,
   touches: [],
   hoverTime: 0,
-  ignoringTouches: false
+  ignoringTouches: true
 };
 
 function start() {
+  uiState.ignoringTouches = false;
   aesthetics.intro();
   aesthetics.startOccasionals();
 }
 
 function stop() {
+  uiState.ignoringTouches = true;
   aesthetics.outro();
   aesthetics.stopOccasionals();
 }
