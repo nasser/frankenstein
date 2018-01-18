@@ -65,6 +65,11 @@
       console.log("got start message");
       state.start();
     });
+    
+    network.server.on("/stop-surface", function (msg, rinfo) {
+      console.log("got stop message");
+      state.stop();
+    });
 
     network.server.on("/reset-surface", function (msg, rinfo) {
       console.log("got reset message");

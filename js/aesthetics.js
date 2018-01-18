@@ -268,15 +268,21 @@ function quickFlicker() {
   }
 }
 
-//// intro ////
+//// intro/outro ////
 
 function intro() {
+  sound.bank.powerOn().play();
+  sound.bank.background().play({loop:true});
+  
   var speed = 0.1;
-  var v = 0.15;
+  var v = 0;
   timeline.start(d => {
     v += d * speed;
     _bulb.tint = blackColor(v);
-    return v >= 0.9;
+    if(v >= 0.9) {
+      _bulb.tint = blackColor(0.95);
+      return true;
+    }
   });
   
   for (var i = 0; i < 4; i++) {
@@ -285,6 +291,25 @@ function intro() {
   }
   
 }
+
+function outro() {
+  // sound.bank.powerOff().play();
+  sound.bank.background().stop(); // fade out?
+  
+  var speed = 0.1;
+  var v = 0.95;
+  
+  timeline.start(d => {
+    v -= d * speed;
+    _bulb.tint = blackColor(v);
+    if(v <= d * speed) {
+      _bulb.tint = blackColor(0);
+      return true;
+    }
+  });
+
+}
+
 
 //// greebles ////
 
@@ -303,6 +328,8 @@ function newGreeble(x, y, rotation) {
 
 //// occasionals ////
 
+var occasionalsHandle;
+
 function occasional(effects) {
   effects = effects || [unfocus, glitchOut, quickFlicker];
   var randomEffect = effects[Math.floor(Math.random() * effects.length)]
@@ -310,16 +337,19 @@ function occasional(effects) {
 }
 
 function startOccasionals() {
-  setInterval(function() {
+  occasionalsHandle = setInterval(function() {
     if(Math.random() < config.occasionalChance)
       occasional();
   }, config.occasionalFrequency * 1000);
 }
 
+function stopOccasionals() {
+  clearInterval(occasionalsHandle);
+}
 
 module.exports = {
   fillerSprites,
-  intro, newGreeble, bulb, quickFlicker, slowFlicker, startOccasionals, corner, fillerPage,
+  outro, stopOccasionals, intro, newGreeble, bulb, quickFlicker, slowFlicker, startOccasionals, corner, fillerPage,
   shuffleFillerPages, adjustRotation, sideRuler, bottomRuler, newDust,
   move, moveRelative, moveBlurry, unfocus, glitchOut,
   filters: { blurFilter, motionBlurFilter, glitchFilter }

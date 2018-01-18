@@ -29,9 +29,13 @@ var uiState = {
 function start() {
   aesthetics.intro();
   aesthetics.startOccasionals();
-  sound.bank.powerOn().play();
-  sound.bank.background().play({loop:true});
 }
+
+function stop() {
+  aesthetics.outro();
+  aesthetics.stopOccasionals();
+}
+
 
 function hoverColor(fromColor, toColor) {
   const t = common.clamp(uiState.hoverTime / interactionConfig.hoverTime, 0, 1),
@@ -145,4 +149,4 @@ var logic = {
   }
 }
 
-module.exports = { start, logic, state, uiState, moveCurve }
+module.exports = { stop, start, logic, state, uiState, moveCurve }
