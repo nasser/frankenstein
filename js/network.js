@@ -10,9 +10,11 @@ function connectOSC(ip, port) {
 }
 
 function sendOSC(address, param) {
-  oscClient.send(address, param, function () {
-    console.log("osc sent", address, param);
-  });
+  for (var i = 0; i < config.sendRepeatCount; i++) {
+    oscClient.send(address, param, function () {
+      console.log("osc sent", address, param);
+    });
+  }
 }
 
 connectOSC(config.remoteIP, config.port);

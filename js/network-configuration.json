@@ -1,4 +1,5 @@
 {
+  "sendRepeatCount": 3,
   "unit": 0,
   "port": 7007,
   "remoteIP": "10.253.0.61"
