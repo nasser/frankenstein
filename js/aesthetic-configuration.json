@@ -1,4 +1,5 @@
 {
+  "finaleWait": 5,
   "disabledWordAlpha": 0.15,
   "wordRotationJitter": 0.3,
   "greebleCount": 10,

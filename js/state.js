@@ -71,6 +71,9 @@ function ignoreTouches() {
 }
 
 var logic = {
+  finale: {
+    tick: function(delta) { }
+  },
   images: {
     tick: function(delta) {
       images.allImages().forEach(i => i.tint = 0x0);
@@ -94,10 +97,10 @@ var logic = {
       if(uiState.hoverTime >= interactionConfig.hoverTime) {
         state.selectedImages.push(image.keyword);
         if(state.selectedImages.length == interactionConfig.totalSelections) {
+          uiState.mode = 'finale';
+          
           const idx = state.selectedImages.length - 1;
           sidebar.display(idx, state.selectedWords[idx], image);
-          sidebar.hideAll();
-          
           console.log("osc", JSON.stringify(state));
           var package = mapping.aggregateMappings(state);
           package.unit = networkConfig.unit;
@@ -105,7 +108,11 @@ var logic = {
           package.parts = state.selectedImages;
           console.log("package", package);
           network.sendOSC("/surface-sentiments", JSON.stringify(package));
-          timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 9 + window.innerHeight/2, moveCurve2));
+          
+          setTimeout(function() {
+            sidebar.hideAll();
+            timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 9 + window.innerHeight/2, moveCurve2));
+          }, aestheticConfig.finaleWait * 1000);
           
         } else {
           const idx = state.selectedImages.length - 1;
