@@ -251,9 +251,9 @@ function slowFlicker() {
 }
 
 function quickFlicker() {
-  sound.bank.quickFlicker().play();
   var speed = 5;
   var v = 1;
+  timeline.start(timeline.once(d => { sound.bank.quickFlicker().play(); }, 'aesthetics'));
   for(var i=0; i<2; i++) {
     timeline.start(d => {
       v -= d * speed;
@@ -266,6 +266,7 @@ function quickFlicker() {
       return v >= 0.9;
     }, 'aesthetics');
   }
+  timeline.start(timeline.once(d => { _bulb.tint = blackColor(1); }, 'aesthetics'));
 }
 
 //// intro/outro ////
