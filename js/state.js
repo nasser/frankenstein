@@ -14,7 +14,9 @@ const words = require("./words"),
 
 var state = {
   selectedWords: [],
-  selectedImages: []
+  selectedImages: [],
+  started: false,
+  stopped: false
 };
 
 var uiState = {
@@ -27,15 +29,25 @@ var uiState = {
 };
 
 function start() {
-  uiState.ignoringTouches = false;
-  aesthetics.intro();
-  aesthetics.startOccasionals();
+  if(!state.started) {
+    state.started = true;
+    uiState.ignoringTouches = false;
+    aesthetics.intro();
+    aesthetics.startOccasionals();
+  } else {
+    console.log("ignoring extra start message")
+  }
 }
 
 function stop() {
-  uiState.ignoringTouches = true;
-  aesthetics.outro();
-  aesthetics.stopOccasionals();
+  if(!state.stopped) {
+    state.stopped = true;
+    uiState.ignoringTouches = true;
+    aesthetics.outro();
+    aesthetics.stopOccasionals();
+  } else {
+    console.log("ignoring extra stop message")
+  }
 }
 
 
