@@ -111,7 +111,7 @@ var logic = {
           
           setTimeout(function() {
             sidebar.hideAll();
-            timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 9 + window.innerHeight/2, moveCurve2));
+            timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 13 + window.innerHeight/2, moveCurve2));
           }, aestheticConfig.finaleWait * 1000);
           
         } else {
@@ -164,7 +164,7 @@ var logic = {
         interactionConfig.ignoreTouchesTimeout * 1000);
         sound.bank.slideStart().play();
         sound.bank.slideLoop().play({loop:true});
-        timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 8 + window.innerHeight/2, moveCurve));
+        timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 12 + window.innerHeight/2, moveCurve));
         timeline.start(timeline.once(d => {
           sound.bank.slideStop().play();
           sound.bank.slideLoop().stop();

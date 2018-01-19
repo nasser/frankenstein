@@ -180,7 +180,7 @@ function adjustRotation(tray) {
       
 //// filler pages ////
 
-const fillerPageCount = 2;
+const fillerPageCount = 7;
 var fillerSprites = [];
 
 function fillerPage(n) {
@@ -194,7 +194,7 @@ function fillerPage(n) {
     page.scale.y = scale;
     page.pivot.x = page.width / 2 / scale;
     page.pivot.y = page.height / 2 / scale;
-    page.rotation = Math.PI/2;
+    // page.rotation = Math.PI/2;
   });
   
   fillerSprites.push(page);
