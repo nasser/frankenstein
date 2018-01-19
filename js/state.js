@@ -30,6 +30,8 @@ var uiState = {
 
 function start() {
   if(!state.started) {
+    // force word redraw, ensures fonts are correct
+    words.allWords().forEach(w => w.dirty = true);
     state.started = true;
     uiState.ignoringTouches = false;
     aesthetics.intro();

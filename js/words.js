@@ -5,12 +5,10 @@ const wordData = require("./words.json"),
 var wordElements = [];
 
 function newText(s, x, y, rotation, scale) {
-  var text = new PIXI.Text(s);
+  console.log("newText", s);
+  var text = new PIXI.Text(s, {fontFamily:"Memphis",fill:"#ccaabb",fontSize:scale});
   text.x = x * (window.innerHeight*0.6);
   text.y = y * (window.innerWidth*0.6);
-  text.style.fill = "#ccaabb";
-  text.style.fontFamily = "Memphis";
-  text.style.fontSize = scale;
   var metrics = PIXI.TextMetrics.measureText(text.text, text.style)
   text.pivot.x = metrics.width/2;
   text.pivot.y = metrics.height/2;

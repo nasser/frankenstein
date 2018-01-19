@@ -53,7 +53,9 @@
   var app, tray, sideInterface;
     
   window.onload = function() {
-    setTimeout(loadExperience, 1000);
+    document.fonts.ready.then(function(f) {
+      setTimeout(loadExperience, 1000);
+    });
   }
   
   function loadExperience() {
