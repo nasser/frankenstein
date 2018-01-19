@@ -134,7 +134,7 @@ var logic = {
       if(ignoreTouches()) return;
       var word = words.selectedWord(uiState.touches);
       
-      if(word) {
+      if(word && !common.contains(state.selectedWords, word.text)) {
         uiState.hoverTime += delta;
         word.style.fill = hoverColor([0, 0, 0], aestheticConfig.highlightColor);
         
@@ -148,8 +148,11 @@ var logic = {
         state.selectedWords.push(word.text);
         uiState.mode = 'images';
         uiState.ignoringTouches = true;
-        setTimeout(() => uiState.ignoringTouches = false,
-          interactionConfig.ignoreTouchesTimeout * 1000);
+        setTimeout(() => {
+          uiState.ignoringTouches = false;
+          word.alpha = aestheticConfig.disabledWordAlpha;
+        },
+        interactionConfig.ignoreTouchesTimeout * 1000);
         sound.bank.slideStart().play();
         sound.bank.slideLoop().play({loop:true});
         timeline.start(aesthetics.moveBlurry(tray.position, "y", -window.innerHeight * 8 + window.innerHeight/2, moveCurve));
