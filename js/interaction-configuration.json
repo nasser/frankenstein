@@ -1,9 +1,10 @@
 {
+  "showParticlesBeforeStart": true,
   "hoverTime": 2,
   "ignoreTouchesTimeout": 5,
   "totalSelections": 5,
   "useMousePointer": true,
-  "waitForFourTouches": true,
+  "waitForFourTouches": false,
   "fullScreen": false,
   "devTools": false
 }

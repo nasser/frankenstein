@@ -159,7 +159,10 @@
       const delta = (d - state.uiState.lastTime) / 1000;
       state.uiState.lastTime = d;
       timeline.runTimelines(delta);
-      particles.updateEmitters(delta, state.uiState.touches);
+      if(interactionConfig.showParticlesBeforeStart || (state.state.started && !state.state.stopped))
+        particles.updateEmitters(delta, state.uiState.touches);
+      else
+        particles.updateEmitters(delta, []);
       currentState().tick(delta);
     }
     
