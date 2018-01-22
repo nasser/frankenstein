@@ -86,7 +86,7 @@ var logic = {
   
   images: {
     tick: function(delta) {
-      let hoverTime = hoverSound().duration - 0.1;
+      let hoverTime = hoverSound().duration;
       images.allImages().forEach(i => i.tint = 0x0);
       
       if(ignoreTouches()) return;
@@ -159,7 +159,7 @@ var logic = {
   
   words: {
     tick: function(delta) {
-      let hoverTime = hoverSound().duration - 0.1;
+      let hoverTime = hoverSound().duration;
       words.allWords().forEach(w => w.style.fill = 0x0);
       
       if(ignoreTouches()) return;
