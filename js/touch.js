@@ -47,7 +47,7 @@ function dispatchTouchEvent(x, y, element, eventType) {
   const touchEvent = new TouchEvent(eventType, {
     cancelable: true,
     bubbles: true,
-    touches: [touchObj, fakeTouchObj01, fakeTouchObj02, fakeTouchObj03],
+    touches: [touchObj],
     targetTouches: [],
     changedTouches: [touchObj],
     shiftKey: true,

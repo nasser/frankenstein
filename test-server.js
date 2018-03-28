@@ -1,18 +1,25 @@
 var osc = require('node-osc');
 
-var oscServer = new osc.Server(3333, '0.0.0.0');
+var oscClient;
 
-oscServer.on("/sentiment", function (msg, rinfo) {
-  console.log("## sentiment message ##");
-  console.log(msg);
-});
+function connectOSC(ip, port) {
+  oscClient = new osc.Client(ip, port);
+  console.log("osc connected", ip, port);
+}
 
-oscServer.on("/focus", function (msg, rinfo) {
-  console.log("## focus message ##");
-  console.log(msg);
-});
+function sendOSC(address, param) {
+  oscClient.send(address, param, function () {
+    console.log("osc sent", address, param);
+  });
+}
 
-oscServer.on("/energy", function (msg, rinfo) {
-  console.log("## energy message ##");
+// connectOSC("127.0.0.1", 7007);
+
+// sendOSC("/start-surface", 1);
+
+var oscServer = new osc.Server(7007, '0.0.0.0');
+
+oscServer.on("/surface-sentiments", function (msg, rinfo) {
+  console.log("## surface-sentiments message ##");
   console.log(msg);
 });
